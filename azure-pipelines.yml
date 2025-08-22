@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'SpecflowTest.sln'
+  buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
+  testPlanId:  123    # ← replace with your Test Plan ID
+  testSuiteId: 456    # ← replace with your Test Suite ID
+
+steps:
+
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet 5.x'
+  inputs:
+    versionSpec: '5.x'
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet packages'
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  displayName: 'Build solution'
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  displayName: 'Run NUnit + SpecFlow tests'
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\bin\$(buildConfiguration)\*SpecflowTest.dll
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    testRunTitle: 'SpecflowTest UI Suite $(Build.BuildNumber)'
+    testPlan: '$(testPlanId)'
+    testSuite: '$(testSuiteId)'
+    publishRunAttachments: true
