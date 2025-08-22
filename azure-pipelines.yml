@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'SpecflowTest.sln'
+  solution: 'SpecflowTest/SpecflowTest.sln'
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   testPlanId:  123    # ← replace with your Test Plan ID
