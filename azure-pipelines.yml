@@ -12,6 +12,7 @@ variables:
   buildPlatform: 'Any CPU'
   testPlanId:  123    # ← replace with your Test Plan ID
   testSuiteId: 456    # ← replace with your Test Suite ID
+  System.Debug: true
 
 steps:
 
